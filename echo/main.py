@@ -45,13 +45,14 @@ def do_time(bot: Bot, update: Update):
 
 
 def do_echo(bot: Bot, update: Update):
-    text = update.message.text
+    chat_id = update.message.chat_id
+    text = "Chat id: {}\n\n{}".format(chat_id, update.message.text)
     if text == "yarik" or text == "Yarik":
         text = "DAUN!!!"
         print("Yarik has been planted")
 
     bot.send_message(
-        chat_id=update.message.chat_id,
+        chat_id=chat_id,
         text=text,
     )
 
