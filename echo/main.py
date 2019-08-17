@@ -1,3 +1,4 @@
+
 from telegram import Bot
 from telegram import Update
 from telegram.ext import Updater
@@ -9,13 +10,18 @@ from telegram.ext import CallbackQueryHandler
 from echo.config import TG_TOKEN
 from echo.config import TG_API_URL
 
-from echo.bot_keyboard import BUTTON1_HELP
-from echo.bot_keyboard import BUTTON2_TIME
-from echo.bot_keyboard import BUTTON3_MYID
+from echo.bot_keyboard import BUTTON1_STATUS
+from echo.bot_keyboard import BUTTON2_INFO
+from echo.bot_keyboard import BUTTON3_EDITWET
+from echo.bot_keyboard import BUTTON4_MANUALWATERING
+from echo.bot_keyboard import BUTTON5_PHOTO
 from echo.bot_keyboard import get_base_reply_keyboard
+
+# -------------------------------------------------
 
 
 # *************************************************
+
 
 def do_start(bot: Bot, update: Update):
     bot.send_message(
@@ -29,26 +35,49 @@ def do_echo(bot: Bot, update: Update):
     chat_id = update.message.chat_id
     text = update.message.text
 
-    if text == BUTTON1_HELP:
-        answer = "No help today"
+    if text == BUTTON1_STATUS:
+        answer = "Starting..."
 
-    elif text == BUTTON2_TIME:
-        answer = "Samoe time"
+    elif text == BUTTON2_INFO:
+        answer = "Auto watering: {}\n" \
+                 "Server time: {}\n" \
+                 "Min wet: {}\n" \
+                 "Real wet: {}\n" \
+                 "Chat ID: {}\n" \
+                 "Wait: {}".format("OFF", "UNDEFINED", "50%", "70%", chat_id, "Don`t work")
 
-    elif text == BUTTON3_MYID:
-        answer = "Chat id: {}".format(chat_id)
+    elif text == BUTTON3_EDITWET:
+        answer = "Old min wet: {}\nEnter new min wet: ".format("50%")
 
-    elif text == "yarik" or text == "Yarik":
-        answer = "DAUN!!!"
-        print("Yarik has been planted")
+    elif text == BUTTON4_MANUALWATERING:
+        #watering...
+        answer = "Flower has been watered"
+
+    elif text == BUTTON5_PHOTO:
+        #take photo...
+        answer = "Here you are!"
 
     else:
-        answer = "Do not understand"
+        answer = "Do not understand!"
 
     bot.send_message(
         chat_id=chat_id,
         text=answer,
     )
+
+
+
+
+"""    elif text == BUTTON3_EDITWET:
+        answer = "Old min wet: {}\nEnter new min wet".format("50%")
+        wait_wet_val = True
+
+    elif wait_wet_val:
+        min_wet = text
+        answer = "New min wet: {}".format(text)
+        wait_wet_val = False
+"""
+
 
 
 # *************************************************
@@ -72,4 +101,5 @@ def main():
 
 if __name__ == '__main__':
     print("Start...")
+
     main()
