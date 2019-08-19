@@ -1,4 +1,6 @@
 
+from RP3.Example import RaspberryPi3B
+
 from telegram import Bot
 from telegram import Update
 from telegram.ext import Updater
@@ -9,6 +11,9 @@ from telegram.ext import CallbackQueryHandler
 
 from echo.config import TG_TOKEN
 from echo.config import TG_API_URL
+from echo.config import RPI_PUMP_PIN
+from echo.config import RPI_WET_PIN
+from echo.config import RPI_MIN_WET
 
 from echo.bot_keyboard import BUTTON1_STATUS
 from echo.bot_keyboard import BUTTON2_INFO
@@ -37,14 +42,16 @@ def do_echo(bot: Bot, update: Update):
 
     if text == BUTTON1_STATUS:
         answer = "Starting..."
+        rpi.AutoMode = True
 
     elif text == BUTTON2_INFO:
+        result = rpi.get_info()
         answer = "Auto watering: {}\n" \
-                 "Server time: {}\n" \
                  "Min wet: {}\n" \
                  "Real wet: {}\n" \
+                 "Server time: {}\n" \
                  "Chat ID: {}\n" \
-                 "Wait: {}".format("OFF", "UNDEFINED", "50%", "70%", chat_id, "Don`t work")
+                 "Wait: {}".format(result[0], result[1], result[2], "UNDEFINED", chat_id, "Don`t work")
 
     elif text == BUTTON3_EDITWET:
         answer = "Old min wet: {}\nEnter new min wet: ".format("50%")
@@ -63,6 +70,7 @@ def do_echo(bot: Bot, update: Update):
     bot.send_message(
         chat_id=chat_id,
         text=answer,
+        reply_markup=get_base_reply_keyboard(),
     )
 
 
@@ -101,5 +109,5 @@ def main():
 
 if __name__ == '__main__':
     print("Start...")
-
+    rpi = RaspberryPi3B(RPI_PUMP_PIN, RPI_WET_PIN, RPI_MIN_WET)
     main()

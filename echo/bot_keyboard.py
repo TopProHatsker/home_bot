@@ -2,7 +2,7 @@ from telegram import KeyboardButton
 from telegram import ReplyKeyboardMarkup
 
 
-BUTTON1_STATUS = "OFF"
+BUTTON1_STATUS = "Auto: OFF"
 BUTTON2_INFO = "Info"
 BUTTON3_EDITWET = "Edit wet"
 BUTTON4_MANUALWATERING = "Manual watering"
