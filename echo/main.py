@@ -14,12 +14,14 @@ from echo.config import TG_API_URL
 from echo.config import RPI_PUMP_PIN
 from echo.config import RPI_WET_PIN
 from echo.config import RPI_MIN_WET
-
+"""
 from echo.bot_keyboard import BUTTON1_STATUS
 from echo.bot_keyboard import BUTTON2_INFO
 from echo.bot_keyboard import BUTTON3_EDITWET
 from echo.bot_keyboard import BUTTON4_MANUALWATERING
 from echo.bot_keyboard import BUTTON5_PHOTO
+"""
+from echo.norm_val import val
 from echo.bot_keyboard import get_base_reply_keyboard
 
 # -------------------------------------------------
@@ -39,28 +41,43 @@ def do_start(bot: Bot, update: Update):
 def do_echo(bot: Bot, update: Update):
     chat_id = update.message.chat_id
     text = update.message.text
+    val.wait_num = 0
 
-    if text == BUTTON1_STATUS:
-        answer = "Starting..."
-        rpi.AutoMode = True
+    if text == val.BUTTON1_STATUS:
+        if rpi.AutoMode:
+            answer = "Stoping..."
+            rpi.AutoMode = False
+            val.BUTTON1_STATUS = "Auto: OFF"
 
-    elif text == BUTTON2_INFO:
+        else:
+            answer = "Starting..."
+            rpi.AutoMode = True
+            val.BUTTON1_STATUS = "Auto: ON"
+        #print(BUTTON1_STATUS)
+
+    elif text == val.BUTTON2_INFO:
         result = rpi.get_info()
         answer = "Auto watering: {}\n" \
                  "Min wet: {}\n" \
                  "Real wet: {}\n" \
                  "Server time: {}\n" \
                  "Chat ID: {}\n" \
-                 "Wait: {}".format(result[0], result[1], result[2], "UNDEFINED", chat_id, "Don`t work")
+                 "Wait: {}".format(result[0], result[1], result[2], "UNDEFINED", chat_id, val.wait_num)
 
-    elif text == BUTTON3_EDITWET:
-        answer = "Old min wet: {}\nEnter new min wet: ".format("50%")
+    elif text == val.BUTTON3_EDITWET:
+        answer = "Old min wet: {}%\nEnter new min wet: ".format(rpi.MinWet)
+        val.wait_num = 1
 
-    elif text == BUTTON4_MANUALWATERING:
+    elif val.wait_num == 1:
+        rpi.MinWet = text
+        answer = "New min wet: {}".format(text)
+        val.wait_num = 0
+
+    elif text == val.BUTTON4_MANUALWATERING:
         #watering...
         answer = "Flower has been watered"
 
-    elif text == BUTTON5_PHOTO:
+    elif text == val.BUTTON5_PHOTO:
         #take photo...
         answer = "Here you are!"
 
