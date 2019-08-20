@@ -19,6 +19,9 @@ class RaspberryPi3B:
         # поливает
         pass
 
+    def take_photo(self):
+        pass
+
     def get_info(self):
         return  self.AutoMode, self.MinWet, self.RealWet
 

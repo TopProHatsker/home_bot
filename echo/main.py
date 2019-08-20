@@ -41,7 +41,7 @@ def do_start(bot: Bot, update: Update):
 def do_echo(bot: Bot, update: Update):
     chat_id = update.message.chat_id
     text = update.message.text
-    val.wait_num = 0
+    print(str(chat_id)+" --> "+text)
 
     if text == val.BUTTON1_STATUS:
         if rpi.AutoMode:
@@ -74,15 +74,16 @@ def do_echo(bot: Bot, update: Update):
         val.wait_num = 0
 
     elif text == val.BUTTON4_MANUALWATERING:
-        #watering...
+        rpi.manual_watering()
         answer = "Flower has been watered"
 
     elif text == val.BUTTON5_PHOTO:
-        #take photo...
+        rpi.take_photo()
         answer = "Here you are!"
 
     else:
         answer = "Do not understand!"
+
 
     bot.send_message(
         chat_id=chat_id,
