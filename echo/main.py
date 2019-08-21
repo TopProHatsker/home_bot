@@ -1,5 +1,5 @@
 
-from RP3.Example import RaspberryPi3B
+from RPI.rpi_code import RaspberryPi3B
 
 from telegram import Bot
 from telegram import Update
