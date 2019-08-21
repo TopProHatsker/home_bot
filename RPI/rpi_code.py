@@ -10,10 +10,14 @@ class RaspberryPi3B:
         self.Wet_PIN = Wet_PIN
         self.MinWet = MinWet
         self.RealWet = 0
+        self.MaxWatTime = 15
+        self.RealWatTime = 0
         self.AutoMode = False
 
+        self.Test_LED = 0
+
     def auto_mode(self):
-        if self.RealWet < self.MinWet:
+        if self.RealWet < self.MinWet and self.RealWatTime < self.MaxWatTime:
             # поливает
             pass
 
@@ -22,10 +26,19 @@ class RaspberryPi3B:
         pass
 
     def take_photo(self):
-        pass
+        if self.Test_LED:
+            self.Test_LED = 0
+        else:
+            self.Test_LED = 1
 
     def get_info(self):
         return self.AutoMode, self.MinWet, self.RealWet
+
+    def sleep(self):
+        pass
+
+    def errors(self):
+        pass
 
 
 """
