@@ -27,6 +27,7 @@ from echo.bot_keyboard import get_base_reply_keyboard
 # -------------------------------------------------
 
 
+
 # *************************************************
 
 
@@ -53,7 +54,6 @@ def do_echo(bot: Bot, update: Update):
             answer = "Starting..."
             rpi.AutoMode = True
             val.BUTTON1_STATUS = "Auto: ON"
-        #print(BUTTON1_STATUS)
 
     elif text == val.BUTTON2_INFO:
         result = rpi.get_info()
@@ -61,8 +61,7 @@ def do_echo(bot: Bot, update: Update):
                  "Min wet: {}\n" \
                  "Real wet: {}\n" \
                  "Server time: {}\n" \
-                 "Chat ID: {}\n" \
-                 "Wait: {}".format(result[0], result[1], result[2], "UNDEFINED", chat_id, val.wait_num)
+                 "Chat ID: {}".format(result[0], result[1], result[2], "UNDEFINED", chat_id)
 
     elif text == val.BUTTON3_EDITWET:
         answer = "Old min wet: {}%\nEnter new min wet: ".format(rpi.MinWet)
@@ -71,6 +70,7 @@ def do_echo(bot: Bot, update: Update):
     elif val.wait_num == 1:
         rpi.MinWet = text
         answer = "New min wet: {}".format(text)
+        val.BUTTON3_EDITWET = "Wet: " + rpi.MinWet + "%"
         val.wait_num = 0
 
     elif text == val.BUTTON4_MANUALWATERING:
@@ -92,20 +92,6 @@ def do_echo(bot: Bot, update: Update):
     )
 
 
-
-
-"""    elif text == BUTTON3_EDITWET:
-        answer = "Old min wet: {}\nEnter new min wet".format("50%")
-        wait_wet_val = True
-
-    elif wait_wet_val:
-        min_wet = text
-        answer = "New min wet: {}".format(text)
-        wait_wet_val = False
-"""
-
-
-
 # *************************************************
 
 def main():
@@ -125,7 +111,25 @@ def main():
     updater.idle()
 
 
+
 if __name__ == '__main__':
     print("Start...")
     rpi = RaspberryPi3B(RPI_PUMP_PIN, RPI_WET_PIN, RPI_MIN_WET)
     main()
+
+
+
+"""try:
+
+    if __name__ == '__main__':
+        print("Start...")
+        rpi = RaspberryPi3B(RPI_PUMP_PIN, RPI_WET_PIN, RPI_MIN_WET)
+        main()
+
+except KeyboardInterrupt:
+    print("Exit pressed Ctrl+C")  # Выход из программы по нажатию Ctrl+C
+except:
+    print("Other Exception")  # Прочие исключения
+finally:
+    # GPIO.cleanup()                      # Возвращаем пины в исходное состояние
+    print("End of program")  # Информируем о завершении работы программы"""

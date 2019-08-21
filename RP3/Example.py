@@ -13,7 +13,9 @@ class RaspberryPi3B:
         self.AutoMode = False
 
     def auto_mode(self):
-        pass
+        if self.RealWet < self.MinWet:
+            # поливает
+            pass
 
     def manual_watering(self):
         # поливает
@@ -23,7 +25,7 @@ class RaspberryPi3B:
         pass
 
     def get_info(self):
-        return  self.AutoMode, self.MinWet, self.RealWet
+        return self.AutoMode, self.MinWet, self.RealWet
 
 
 """

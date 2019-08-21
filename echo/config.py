@@ -6,4 +6,4 @@ TG_API_URL = "https://telegg.ru/orig/bot"
 
 RPI_PUMP_PIN = 1
 RPI_WET_PIN = 2
-RPI_MIN_WET = 0
+RPI_MIN_WET = 50
